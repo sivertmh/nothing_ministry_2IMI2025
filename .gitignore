@@ -1,0 +1,7 @@
+.env
+.venv
+env/
+venv/
+.vscode/
+static_ip.ps1
+python/__pycache__/
