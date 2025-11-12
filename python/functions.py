@@ -24,19 +24,31 @@ def create_db():
 def show_customers():
     mycursor.execute("SELECT * FROM users")
 
-    result = mycursor.fetchall()
     print(mycursor.rowcount, "endring(er)")
 
-def create_table_users():
-    mycursor.execute("CREATE TABLE users (name VARCHAR(255), address VARCHAR(255))")
+def create_tables():
+    try:
+        mycursor.execute("CREATE TABLE user (id INT AUTO_INCREMENT PRIMARY KEY, name VARCHAR(255) NOT NULL, surname VARCHAR(255) NOT NULL, email VARCHAR(255) NOT NULL)")
+        mycursor.execute("CREATE TABLE item (id INT AUTO_INCREMENT PRIMARY KEY, name VARCHAR(255) NOT NULL, category_id INT, FOREIGN KEY (category_id) REFERENCES category(id))")
+        mycursor.execute("CREATE TABLE category (id INT AUTO_INCREMENT PRIMARY KEY, name VARCHAR(255) NOT NULL, category_id INT, FOREIGN KEY (category_id) REFERENCES category(id))")
+        mycursor.execute("CREATE TABLE order (id INT AUTO_INCREMENT PRIMARY KEY, date_ordered CURRENT_TIMESTAMP, FOREIGN KEY user_id REFERENCES user(id), FOREIGN KEY product_id REFERENCES product(id)")
 
-    mydb.commit()
-    tables = mycursor.execute("SHOW TABLES")
+        mydb.commit()
+    except:
+        print("Noen eller alle tabeller finnes allerede.")
+
+    print("Oppdatert tabelliste:\n")
+    mycursor.execute("SHOW TABLES")
     
-    print("Tabell ble lagt til.\nOppdatert tabelliste:", tables)
+    mycursor.execute("SELECT * FROM user")
+
+    myresult = mycursor.fetchall()
+
+    for x in myresult:
+        print(x)
 
 def add_content_users():
-    sql = "INSERT INTO users (name, address) VALUES (%s, %s)"
+    sql = "INSERT INTO user (name, address) VALUES (%s, %s)"
     val = ("John", "Highway 21")
     mycursor.execute(sql, val)
 
