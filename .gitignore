@@ -5,3 +5,4 @@ venv/
 .vscode/
 static_ip.ps1
 python/__pycache__/
+__pycache__/

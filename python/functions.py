@@ -1,4 +1,5 @@
-import os, mysql.connector; from dotenv import load_dotenv
+import os, mysql.connector
+from dotenv import load_dotenv
 
 load_dotenv()
 
@@ -46,6 +47,14 @@ def create_tables():
 
     for x in myresult:
         print(x)
+        
+def reset_tables():
+    sql = "DROP TABLE IF EXISTS user"
+    mycursor.execute(sql)
+    
+    mydb.commit()
+    
+    print(mycursor.rowcount, "endring(er).")
 
 def add_content_users():
     sql = "INSERT INTO user (name, address) VALUES (%s, %s)"
@@ -55,5 +64,10 @@ def add_content_users():
     mydb.commit()
     
     print(mycursor.rowcount, "endring(er).")
+
+def show_tables():
+    sql = "SHOW TABLES"
+    mycursor.execute(sql)
     
 #kjøring av funksjoner
+
