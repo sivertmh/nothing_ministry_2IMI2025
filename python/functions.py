@@ -9,7 +9,7 @@ def get_connection():
         host=os.environ.get("DB_HOST", "localhost"),
         user=os.environ.get("DB_USER"),
         password=os.environ.get("DB_PASSWORD"),
-        database=os.environ.get("DB_NAME"),
+        database=os.environ.get("DB_NAME"), 
         port="3306",
     )
 
