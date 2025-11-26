@@ -9,7 +9,7 @@
 
 **Kort beskrivelse av prosjektet:**
 
-Jeg har lyst til å lage en slags nettbutikk for kulturmedia som lar deg kjøpe musikk, filmer, serier, bøker og spill. Målgruppen til denne nettsiden vil være de som liker kulturmedia og de som vil eie ting selv. Du kan gå inn på din egen bruker og få en oversikt over det du eier, og du kan laste det ned lokalt. Mange av disse funksjonene er imaginære, for jeg kan ikke nok til å lage det hele enda. Det jeg kan og skal gjøre er å manuellt legge in brukere og få en fin profilside til å vise hva du har kjøpt.
+Jeg har lyst til å lage en slags nettbutikk for kulturmedia. Den lar deg kjøpe musikk, filmer, serier, bøker og spill (ikke online-spill). Målgruppen til denne nettsiden vil være de som liker kulturmedia og de som vil eie ting selv. Du kan gå inn på din egen bruker og få en oversikt over det du eier, og du kan laste det ned lokalt. Mange av disse funksjonene er imaginære, for jeg kan ikke nok til å lage det hele enda. Det jeg kan og skal gjøre er å manuellt legge in brukere og få en fin profilside til å vise hva du har kjøpt.
 
 ------------------------------------------------------------------------
 
@@ -43,9 +43,9 @@ Vi har en Raspberry Pi 4 vi har fått av skolen og bruker den som fysisk server.
 ### Nettverksoppsett
 
 -   Nettverksdiagram
--   IP-adresser: 10.200.14.19 (rpi), 10.200.14.70 (skolepc)
+-   IP-adresser: 10.200.14.71 (rpi), 10.200.14.70 (skolepc)
 -   Porter: 22 (ssh)
--   Brannmurregler: ufw allow 22 tcp
+-   Brannmurregler: ufw allow 22
 
 Eksempel:
 
