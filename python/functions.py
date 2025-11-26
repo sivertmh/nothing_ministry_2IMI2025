@@ -27,47 +27,24 @@ def show_customers():
 
     print(mycursor.rowcount, "endring(er)")
 
+#lager tabellene som db består av
 def create_tables():
-    try:
-        mycursor.execute("CREATE TABLE user (id INT AUTO_INCREMENT PRIMARY KEY, name VARCHAR(255) NOT NULL, surname VARCHAR(255) NOT NULL, email VARCHAR(255) NOT NULL)")
-        mycursor.execute("CREATE TABLE item (id INT AUTO_INCREMENT PRIMARY KEY, name VARCHAR(255) NOT NULL, category_id INT, FOREIGN KEY (category_id) REFERENCES category(id))")
-        mycursor.execute("CREATE TABLE category (id INT AUTO_INCREMENT PRIMARY KEY, name VARCHAR(255) NOT NULL, category_id INT, FOREIGN KEY (category_id) REFERENCES category(id))")
-        mycursor.execute("CREATE TABLE order (id INT AUTO_INCREMENT PRIMARY KEY, date_ordered CURRENT_TIMESTAMP, FOREIGN KEY user_id REFERENCES user(id), FOREIGN KEY product_id REFERENCES product(id)")
 
-        mydb.commit()
-    except:
-        print("Noen eller alle tabeller finnes allerede.")
+    mycursor.execute("CREATE TABLE user (id INT AUTO_INCREMENT PRIMARY KEY, name VARCHAR(255) NOT NULL, surname VARCHAR(255) NOT NULL, username VARCHAR(255) NOT NULL UNIQUE, email VARCHAR(255) NOT NULL)")
+    mycursor.execute("CREATE TABLE category (id INT AUTO_INCREMENT PRIMARY KEY, name VARCHAR(255) NOT NULL)")
+    mycursor.execute("CREATE TABLE item (id INT AUTO_INCREMENT PRIMARY KEY, name VARCHAR(255) NOT NULL, category_id INT, FOREIGN KEY (category_id) REFERENCES category(id))")
+    mycursor.execute("CREATE TABLE receipt (id INT AUTO_INCREMENT PRIMARY KEY, date_ordered TIMESTAMP DEFAULT CURRENT_TIMESTAMP, user_id INT, item_id INT, FOREIGN KEY (user_id) REFERENCES user(id), FOREIGN KEY (item_id) REFERENCES item(id))")
 
-    print("Oppdatert tabelliste:\n")
-    mycursor.execute("SHOW TABLES")
-    
-    mycursor.execute("SELECT * FROM user")
-
-    myresult = mycursor.fetchall()
-
-    for x in myresult:
-        print(x)
-        
-def reset_tables():
-    sql = "DROP TABLE IF EXISTS user"
-    mycursor.execute(sql)
-    
     mydb.commit()
-    
-    print(mycursor.rowcount, "endring(er).")
 
-def add_content_users():
-    sql = "INSERT INTO user (name, address) VALUES (%s, %s)"
-    val = ("John", "Highway 21")
-    mycursor.execute(sql, val)
+def add_content_user():
+    sql = "INSERT INTO user (name, surname, username, email) VALUES (%s, %s, %s, %s)"
+    val = {
+        ("Sivert", "K", "sivek", "sivek@email.com"),
+        ("Ylla", "K", "yllak", "yllak@email.com"),
+           }
+    mycursor.executemany(sql, val)
 
     mydb.commit()
     
     print(mycursor.rowcount, "endring(er).")
-
-def show_tables():
-    sql = "SHOW TABLES"
-    mycursor.execute(sql)
-    
-#kjøring av funksjoner
-

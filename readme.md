@@ -2,14 +2,12 @@
 
 ## 1. Forside
 
-**Prosjekttittel:** The Ministry of Nothing\
-**Navn:** Sivert Mathisen Hansen\
-**Klasse:** 2IMI\
+**Prosjekttittel:** The Ministry of Nothing
+**Navn:** Sivert Mathisen Hansen
+**Klasse:** 2IMI
 **Dato startet:** 10. november 2025
 
-**Kort beskrivelse av prosjektet:**\
-*Skriv 2--4 setninger om hva applikasjonen gjør og hvilket tema den
-bygger på.*
+**Kort beskrivelse av prosjektet:**
 
 Jeg har lyst til å lage en slags nettbutikk for kulturmedia som lar deg kjøpe musikk, filmer, serier, bøker og spill. Målgruppen til denne nettsiden vil være de som liker kulturmedia og de som vil eie ting selv. Du kan gå inn på din egen bruker og få en oversikt over det du eier, og du kan laste det ned lokalt. Mange av disse funksjonene er imaginære, for jeg kan ikke nok til å lage det hele enda. Det jeg kan og skal gjøre er å manuellt legge in brukere og få en fin profilside til å vise hva du har kjøpt.
 
@@ -17,13 +15,15 @@ Jeg har lyst til å lage en slags nettbutikk for kulturmedia som lar deg kjøpe 
 
 ## 2. Systembeskrivelse
 
-**Formål med applikasjonen:**\
+**Formål med applikasjonen:**
 
 Formålet er å vise kompetanse innenfor temaet databaser, python og sql. Prosjektet har stor telling på karakteren dette skoleåret.
 
-**Brukerflyt:**\
+**Brukerflyt:**
 *Beskriv hvordan brukeren bruker løsningen -- fra startside til lagring
 av data.*
+
+Startsiden er velkommer og tilbyr online shopping av de forskjellige mediumene. Her kan du kjøpe ting (legge til ditt bibliotek). En av lenkene på navbaren leder til brukersiden din, hvor du får en oversikt av eiendeler, sortert i ulike kategorier (film, spill, bok, osv.). 
 
 **Teknologier brukt:**
 
@@ -38,14 +38,14 @@ av data.*
 
 ### Servermiljø
 
-Vi har en Raspberry Pi 4 vi har fått av skolen og bruker den som fysisk server. På den er Raspberry Pi OS 64-bit Lite installert.
+Vi har en Raspberry Pi 4 vi har fått av skolen og bruker den som fysisk server. På den var Raspberry Pi OS 64-bit Lite installert.
 
 ### Nettverksoppsett
 
 -   Nettverksdiagram
--   IP-adresser
--   Porter
--   Brannmurregler
+-   IP-adresser: 10.200.14.19 (rpi), 10.200.14.70 (skolepc)
+-   Porter: 22 (ssh)
+-   Brannmurregler: ufw allow 22 tcp
 
 Eksempel:
 
@@ -55,7 +55,7 @@ Eksempel:
 
 -   systemctl / Supervisor
 -   Filrettigheter
--   Miljøvariabler
+-   Miljøvariabler: DB_HOST, DB_USER, DB_PASSORD, DB_NAME
 
 ------------------------------------------------------------------------
 
@@ -79,23 +79,35 @@ Refleksjon: Hvordan hjalp Kanban arbeidet?
 INT \| Primærnøkkel \| \| customers \| name \| VARCHAR(255) \| Navn \|
 \| customers \| address \| VARCHAR(255) \| Adresse \|
 
++----------+--------------+------+-----+---------+----------------+
+| Field    | Type         | Null | Key | Default | Extra          |
++----------+--------------+------+-----+---------+----------------+
+| id       | int(11)      | NO   | PRI | NULL    | auto_increment |
+| name     | varchar(255) | NO   |     | NULL    |                |
+| surname  | varchar(255) | NO   |     | NULL    |                |
+| username | varchar(255) | NO   | UNI | NULL    |                |
+| email    | varchar(255) | NO   |     | NULL    |                |
++----------+--------------+------+-----+---------+----------------+
+
 **SQL-eksempel:**
 
 ``` sql
-CREATE TABLE customers (
-  id INT AUTO_INCREMENT PRIMARY KEY,
-  name VARCHAR(255),
-  address VARCHAR(255)
-);
+CREATE TABLE user (
+id INT AUTO_INCREMENT PRIMARY KEY, 
+name VARCHAR(255) NOT NULL, 
+surname VARCHAR(255) NOT NULL, 
+username VARCHAR(255) NOT NULL UNIQUE,
+email VARCHAR(255) NOT NULL);
 ```
 
 ------------------------------------------------------------------------
 
 ## 6. Programstruktur
 
-    projektnavn/
+    nothing_ministry_2imi2025/
      ├── app.py
      ├── templates/
+     ├── python/
      ├── static/
      └── .env
 
@@ -114,10 +126,10 @@ Forklar ruter og funksjoner (kort).
 ## 8. Sikkerhet og pålitelighet
 
 -   .env
--   Miljøvariabler
--   Parameteriserte spørringer
+-   Miljøvariabler for hemmelig info
+-   Parameteriserte spørringer med %s
 -   Validering
--   Feilhåndtering
+-   Feilhåndtering i python med try except
 
 ------------------------------------------------------------------------
 
@@ -126,6 +138,26 @@ Forklar ruter og funksjoner (kort).
 -   Typiske feil
 -   Hvordan du løste dem
 -   Testmetoder
+
+**Definering av tabeller på feil måte:**
+
+- Feil rekkefølge slik at tabeller med FK blir laget før den den refererer til.
+
+- Ikke kall en tabell for *order*, for det ser ut til å være en sql-kommando og førte til at tabell ikke ble laget. Jeg kalte den *receipt* istdeden.
+
+**SSH til pi stoppet å funke:**
+
+- Jeg fikk feilen *"permission denied (public key)"*, for pi-en hadde blitt plutselig satt til å bare bruke ssh-key og ingen passord. Jeg fikset feilen ved å gå til filen */etc/ssh/sshd_config* og endre linjen *PasswordAuthentication* til *yes*, det sto *no* for meg.
+
+**Kunne ikke pinge eller koble til Pi:**
+
+- Viste seg å være et brannmurproblem. Dette hjalp:
+
+```bash
+sudo ufw allow from any to any proto
+sudo ufw reload
+```
+- Dette åpner *proto* i brannmuren, noe som fikset problemet med ping og tilkobling.
 
 ------------------------------------------------------------------------
 
@@ -142,3 +174,4 @@ Forklar ruter og funksjoner (kort).
 
 -   w3schools
 -   flask.palletsprojects.com
+- [ssh.com](https://www.ssh.com/academy/ssh/sshd_config)
