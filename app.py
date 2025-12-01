@@ -54,8 +54,8 @@ def show_user(username):
     
 # registering av bruker
 @app.route('/u/register', methods=['POST', 'GET'])
-def add_customer():
-    # hvis noen POST-er, f.eks. i dette tilfellet trykker submit på form, så kjører koden
+def register_user():
+    # Hvis POST gjøres (submit), så legges bruker og går tilbake til startside.
     if request.method == 'POST':
         mydb = get_connection()
         mycursor = mydb.cursor()
@@ -69,11 +69,10 @@ def add_customer():
         val = (name, surname, username, email)
         
         mycursor.execute(sql, val)
-        
         mydb.commit()
         
         return redirect('/')
-    return render_template('index.html')
+    return render_template('register.html')
 
 
 if __name__ == "__main__":
