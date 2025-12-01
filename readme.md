@@ -1,4 +1,4 @@
-# Flask-prosjekt -- Dokumentasjon
+# Flask-prosjekt "The Ministry of Nothing" — Dokumentasjon
 
 ## 1. Forside
 
@@ -12,7 +12,7 @@
 
 **Kort beskrivelse av prosjektet:**
 
-Jeg har lyst til å lage en slags nettbutikk for kulturmedia. Den lar deg kjøpe musikk, filmer, serier, bøker og spill (ikke online-spill). Målgruppen til denne nettsiden vil være de som liker kulturmedia og de som vil eie ting selv. Du kan gå inn på din egen bruker og få en oversikt over det du eier, og du kan laste det ned lokalt. Mange av disse funksjonene er imaginære, for jeg kan ikke nok til å lage det hele enda. Det jeg kan og skal gjøre er å manuellt legge in brukere og få en fin profilside til å vise hva du har kjøpt.
+Jeg har lyst til å lage en slags nettbutikk for kulturmedia. Den lar deg kjøpe musikk, filmer, serier, bøker og spill (ikke online-spill). Målgruppen til denne nettsiden vil være de som liker kulturmedia og de som vil eie ting selv. Du kan gå inn på din egen bruker og få en oversikt over det du eier, sortert etter type media. Dette kan da lastes ned lokalt (imaginær funksjonalitet). Hvis flere enn manuellt lagt til brukerene
 
 ---
 
@@ -23,17 +23,16 @@ Jeg har lyst til å lage en slags nettbutikk for kulturmedia. Den lar deg kjøpe
 Formålet er å vise kompetanse innenfor temaet databaser, python og sql. Prosjektet har stor telling på karakteren dette skoleåret.
 
 **Brukerflyt:**
-_Beskriv hvordan brukeren bruker løsningen -- fra startside til lagring
-av data._
 
-Startsiden er velkommer og tilbyr online shopping av de forskjellige mediumene. Her kan du kjøpe ting (legge til ditt bibliotek). En av lenkene på navbaren leder til brukersiden din, hvor du får en oversikt av eiendeler, sortert i ulike kategorier (film, spill, bok, osv.).
+Startsiden er en velkomstside og tilbyr online shopping av de forskjellige mediumene. Her kan du kjøpe ting (ingen faktisk betaling), deretter eier du de. En av lenkene på navbaren leder til brukersiden din, og du får en oversikt av eiendeler, sortert etter ulike kategorier (film, spill, bok, osv.). 
+
+Dette gjelder bare hvis du har en bruker allerede. Hvis du ikke har bruker kan du gå til "/register" på nettsiden og fylle ut skjemaet som lager en.
 
 **Teknologier brukt:**
 
 - Python / Flask
 - MariaDB
 - HTML / CSS / JS
-- (valgfritt) Docker / Nginx / Gunicorn / Waitress osv.
 
 ---
 
@@ -120,7 +119,38 @@ Databasestrøm:
 
 ## 7. Kodeforklaring
 
-Forklar ruter og funksjoner (kort).
+Under er koden for en dynamisk brukerside.
+
+```python
+# varierende brukerside
+@app.route("/u/<string:username>")
+def show_user(username):
+    mydb = get_connection()
+    mycursor = mydb.cursor()
+
+    # Henter brukernavn og id basert på brukernavn i url
+    mycursor.execute("SELECT id, username FROM user WHERE username = %s", (username,))
+    row = mycursor.fetchone()
+
+    if row:
+        user_id, username = row
+        # henter "items" fra gjeldene bruker
+        mycursor.execute("SELECT * FROM item WHERE user_id = %s", (user_id,))
+        items = mycursor.fetchall()
+    else:
+        username = "User not found"
+        items = []
+
+    mydb.close()
+
+    return render_template("user.html", username=username, item=items)
+```
+
+Forklaring:
+
+1. Den kjører en sql-query mot databasen for å hente ut brukernavn og passord.
+
+2. Bruker If-setning til å bare hente "items" bruker eier.
 
 ---
 
@@ -128,7 +158,7 @@ Forklar ruter og funksjoner (kort).
 
 - .env
 - Miljøvariabler for hemmelig info
-- Parameteriserte spørringer med %s
+- Parameteriserte spørringer med %s ved queries
 - Validering
 - Feilhåndtering i python med try except
 

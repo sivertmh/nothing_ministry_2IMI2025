@@ -9,16 +9,32 @@
       href="{{ url_for('static', filename='stylesheets/style.css')}}"
     />
   </head>
-  <header>
-    <h1>The Ministry of Nothing</h1>
-    <ul>
-      <li><a href="./index.html">Home</a></li>
-      <li><a href="">Contact</a></li>
-      <li><a href="">About</a></li>
-      <li><a href="./user.html">Library</a></li>
-    </ul>
-  </header>
+
   <body>
-    <p>{{ username }}'s library</p>
+    <header>
+      <h1>The Ministry of Nothing</h1>
+      <ul>
+        <li><a href="{{ url_for('index') }}">Home</a></li>
+        <li><a href="#">Contact</a></li>
+        <li><a href="#">About</a></li>
+        <li>
+          <a href="{{ url_for('show_user', username=username) }}">Library</a>
+        </li>
+      </ul>
+    </header>
+
+    <main>
+      <p class="user-lib-heading">{{ username }}'s library</p>
+
+      {% if item %}
+      <ul>
+        {% for i in item %}
+        <li>{{ i[1] }}</li>
+        {% endfor %}
+      </ul>
+      {% else %}
+      <p>No items found.</p>
+      {% endif %}
+    </main>
   </body>
 </html>

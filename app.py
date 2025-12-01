@@ -19,34 +19,43 @@ except:
 
 # legger til startinnhold i user-tabell
 try:
-    add_content_user()
+    insert_default_data()
 except:
-    print("Tabellen 'user' skal ha data i seg.")
+    print("Standard data enten mangler eller finnes fra før.")
 
+# startside
 @app.route("/")
 def index():
     return render_template("index.html")
 
+# varierende brukerside
 @app.route("/u/<string:username>")
 def show_user(username):
     mydb = get_connection()
     mycursor = mydb.cursor()
 
-    mycursor.execute("SELECT username FROM user WHERE username = %s", (username,))
+    # Henter brukernavn og id basert på brukernavn i url
+    mycursor.execute("SELECT id, username FROM user WHERE username = %s", (username,))
     row = mycursor.fetchone()
+
+    if row:
+        user_id, username = row
+        # henter "items" fra gjeldene bruker
+        mycursor.execute("SELECT * FROM owned WHERE user_id = %s", (user_id,))
+        items = mycursor.fetchall()
+    else:
+        username = "User not found"
+        items = []
 
     mydb.close()
 
-    if row:
-        username = row[0]
-    else:
-        username = "User not found"
+    return render_template("user.html", username=username, item=items)
 
-    return render_template("user.html", username=username)
-
+    
+# registering av bruker
 @app.route('/u/register', methods=['POST', 'GET'])
 def add_customer():
-    #hvis noen POST-er, altså trykker submit på form, så kjører koden
+    # hvis noen POST-er, f.eks. i dette tilfellet trykker submit på form, så kjører koden
     if request.method == 'POST':
         mydb = get_connection()
         mycursor = mydb.cursor()

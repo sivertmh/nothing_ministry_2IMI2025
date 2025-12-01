@@ -1,14 +1,15 @@
 * {
-    margin: 0;
-    padding: 0;
+  margin: 0;
+  padding: 0;
 }
 
 header {
-    background-color: black;
+  background-color: black;
+  margin-bottom: 75px;
 }
 
 header h1 {
-    color: white;
+  color: white;
 }
 
 ul {
@@ -28,4 +29,8 @@ ul li a {
 
 ul li a:hover {
   background-color: #111111;
+}
+
+.user-lib-heading {
+  text-align: center;
 }
