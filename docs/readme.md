@@ -12,7 +12,7 @@
 
 **Kort beskrivelse av prosjektet:**
 
-Jeg har lyst til å lage en slags nettbutikk for kulturmedia. Den lar deg kjøpe musikk, filmer, serier, bøker og spill (ikke online-spill). Målgruppen til denne nettsiden vil være de som liker kulturmedia og de som vil eie ting selv. Du kan gå inn på din egen bruker og få en oversikt over det du eier, sortert etter type media. Dette kan da lastes ned lokalt (imaginær funksjonalitet). Hvis flere enn manuellt lagt til brukerene
+Jeg har lyst til å lage en slags nettbutikk for kulturmedia. Den lar deg kjøpe musikk, filmer, serier, bøker og spill (ikke online-spill). Målgruppen til denne nettsiden vil være de som liker kulturmedia og de som vil eie ting selv. Du kan gå inn på din egen bruker og få en oversikt over det du eier, sortert etter type media. Dette kan da lastes ned lokalt (imaginær funksjonalitet).
 
 ---
 
@@ -24,9 +24,9 @@ Formålet er å vise kompetanse innenfor temaet databaser, python og sql. Prosje
 
 **Brukerflyt:**
 
-Startsiden er en velkomstside og tilbyr online shopping av de forskjellige mediumene. Her kan du kjøpe ting (ingen faktisk betaling), deretter eier du de. En av lenkene på navbaren leder til brukersiden din, og du får en oversikt av eiendeler, sortert etter ulike kategorier (film, spill, bok, osv.). 
+Startsiden er en velkomstside og tilbyr online shopping av de forskjellige mediumene. Her kan du kjøpe ting (ingen faktisk betaling), deretter eier du de. En av lenkene på navbaren leder til brukersiden din, og du får en oversikt av eiendeler, sortert etter ulike kategorier (film, spill, bok, osv.).
 
-Dette gjelder bare hvis du har en bruker allerede. Hvis du ikke har bruker kan du gå til "/register" på nettsiden og fylle ut skjemaet som lager en.
+Dette gjelder bare hvis du har en bruker allerede. Hvis du ikke har bruker kan du gå til "/u/register" (på navbar: Register) på nettsiden og fylle ut skjemaet som lager en.
 
 **Teknologier brukt:**
 
@@ -67,7 +67,9 @@ Eksempel:
 - Issues
 - Skjermbilde (valgfritt)
 
-Refleksjon: Hvordan hjalp Kanban arbeidet?
+**Hvordan hjalp Kanban arbeidet?**
+
+Jeg har ikke vært vant til å bruke noe slikt før, men det var veldig hjelpsomt. Kanban erstatter det vi gjorde før, altså å skrive ned mål for neste time i loggen. Nå har jeg en enkel oversikt som jeg ikke må skrive om igjen, og det bare fordi jeg ikke ble helt ferdig den dagen. Når du har skrevet inn et issue, kan du bare flytte den rundt på tavlen. Du ser også hva du har gjort. Det var motiverende å se akkurat det på en dårlig dag.
 
 ---
 
@@ -91,6 +93,8 @@ Refleksjon: Hvordan hjalp Kanban arbeidet?
 
 **SQL-eksempel:**
 
+Denne koden lager brukertabellen:
+
 ```sql
 CREATE TABLE user (
 id INT AUTO_INCREMENT PRIMARY KEY,
@@ -107,8 +111,21 @@ email VARCHAR(255) NOT NULL);
     nothing_ministry_2imi2025/
      ├── app.py
      ├── templates/
+     |     ├──index.html
+     |     ├──register.html
+     |     └──user.html
+     |
      ├── python/
+     |     └──functions.py
+     |
      ├── static/
+     |     ├──media/
+     |     └──stylesheets/
+     |          └──style.css
+     |
+     ├── docs/
+     |     └──readme.md
+     |
      └── .env
 
 Databasestrøm:
@@ -135,7 +152,7 @@ def show_user(username):
     if row:
         user_id, username = row
         # henter "items" fra gjeldene bruker
-        mycursor.execute("SELECT * FROM item WHERE user_id = %s", (user_id,))
+        mycursor.execute("SELECT * FROM owned WHERE user_id = %s", (user_id,))
         items = mycursor.fetchall()
     else:
         username = "User not found"
@@ -157,7 +174,7 @@ Forklaring:
 ## 8. Sikkerhet og pålitelighet
 
 - .env
-- Miljøvariabler for hemmelig info
+- Miljøvariabler for db-passord, db-brukernavn, o.l.
 - Parameteriserte spørringer med %s ved queries
 - Validering
 - Feilhåndtering i python med try except
@@ -169,6 +186,16 @@ Forklaring:
 - Typiske feil
 - Hvordan du løste dem
 - Testmetoder
+
+### Testing
+
+Sletter alle tabeller slik at jeg kan starte fra null. Dette er fint hvis jeg endrer på strukturen i python-koden:
+
+```sql
+DROP TABLE IF EXISTS user, category, creator, item, owned;
+```
+
+### Feil Jeg Fikk
 
 **Definering av tabeller på feil måte:**
 
