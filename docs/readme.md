@@ -80,6 +80,20 @@ Jeg har ikke vært vant til å bruke noe slikt før, men det var veldig hjelpsom
 **Tabeller:**
 
 ```sql
+# alle tabeller
+# SHOW TABLES;
++----------------------------+
+| Tables_in_nothing_ministry |
++----------------------------+
+| category                   |
+| creator                    |
+| item                       |
+| owned                      |
+| user                       |
++----------------------------+
+
+# struktur av user-tabell
+# DESC user;
 +----------+--------------+------+-----+---------+----------------+
 | Field    | Type         | Null | Key | Default | Extra          |
 +----------+--------------+------+-----+---------+----------------+
@@ -89,6 +103,17 @@ Jeg har ikke vært vant til å bruke noe slikt før, men det var veldig hjelpsom
 | username | varchar(255) | NO   | UNI | NULL    |                |
 | email    | varchar(255) | NO   |     | NULL    |                |
 +----------+--------------+------+-----+---------+----------------+
+
+# av owned-tabell
+# DESC owned;
++--------------+-----------+------+-----+---------------------+----------------+
+| Field        | Type      | Null | Key | Default             | Extra          |
++--------------+-----------+------+-----+---------------------+----------------+
+| id           | int(11)   | NO   | PRI | NULL                | auto_increment |
+| date_ordered | timestamp | YES  |     | current_timestamp() |                |
+| user_id      | int(11)   | YES  | MUL | NULL                |                |
+| item_id      | int(11)   | YES  | MUL | NULL                |                |
++--------------+-----------+------+-----+---------------------+----------------+
 ```
 
 **SQL-eksempel:**
@@ -96,12 +121,20 @@ Jeg har ikke vært vant til å bruke noe slikt før, men det var veldig hjelpsom
 Denne koden lager brukertabellen:
 
 ```sql
-CREATE TABLE user (
-id INT AUTO_INCREMENT PRIMARY KEY,
-name VARCHAR(255) NOT NULL,
-surname VARCHAR(255) NOT NULL,
-username VARCHAR(255) NOT NULL UNIQUE,
-email VARCHAR(255) NOT NULL);
+# backticks på "user" fordi den brukes allerede i sql-kode
+CREATE TABLE `user` (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    surname VARCHAR(255) NOT NULL,
+    username VARCHAR(255) NOT NULL UNIQUE,
+    email VARCHAR(255) NOT NULL
+);
+```
+
+Koden under 
+
+```sql
+INSERT INTO owned (user_id, item_id) VALUES (1, 1);
 ```
 
 ---
@@ -189,11 +222,14 @@ Forklaring:
 
 ### Testing
 
-Sletter alle tabeller slik at jeg kan starte fra null. Dette er fint hvis jeg endrer på strukturen i python-koden:
+Sletter alle tabeller slik at jeg kan starte fra null. Dette er fint hvis jeg endrer på strukturen i python-koden. Rekkefølgen er viktig, ellers får du error med foreign key:
 
 ```sql
-DROP TABLE IF EXISTS user, category, creator, item, owned;
+DROP TABLE IF EXISTS owned, item, creator, category, user;
 ```
+
+Når jeg hadde feil rekkefølge fikk jeg denne feilen:
+ERROR 1451 (23000): Cannot delete or update a parent row: a foreign key constraint fails
 
 ### Feil Jeg Fikk
 
@@ -222,7 +258,8 @@ sudo ufw reload
 
 ## 10. Konklusjon og refleksjon
 
-- Hva lærte du?
+**Hva lærte du?**
+
 - Hva fungerte bra?
 - Hva ville du gjort annerledes?
 - Hva var utfordrende?
@@ -233,4 +270,5 @@ sudo ufw reload
 
 - w3schools
 - flask.palletsprojects.com
-- [ssh.com](https://www.ssh.com/academy/ssh/sshd_config)
+- [ssh.com (host configuration)](https://www.ssh.com/academy/ssh/sshd_config)
+- [geeksforgeeks.com (flask session)](https://www.geeksforgeeks.org/python/how-to-use-flask-session-in-python-flask/)

@@ -1,5 +1,4 @@
-from flask import Flask, request, render_template, redirect, session
-from flask_session import Session
+from flask import Flask, request, render_template, redirect
 #importerer alle funksjoner fra min functions.py
 from python.functions import *
 
@@ -21,7 +20,7 @@ except:
 try:
     insert_default_data()
 except:
-    print("Standard data enten mangler eller finnes fra før.")
+    print("Standard data enten finnes fra før eller mangler.")
 
 # startside
 @app.route("/")
@@ -33,6 +32,8 @@ def index():
 def show_user(username):
     mydb = get_connection()
     mycursor = mydb.cursor()
+    
+    
 
     # Henter brukernavn og id basert på brukernavn i url
     mycursor.execute("SELECT id, username FROM user WHERE username = %s", (username,))

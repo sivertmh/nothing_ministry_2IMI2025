@@ -1,40 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Your Library - The Ministry of Nothing</title>
-    <link
-      rel="stylesheet"
-      href="{{ url_for('static', filename='stylesheets/style.css')}}"
-    />
-  </head>
 
-  <body>
-    <header>
-      <h1>The Ministry of Nothing</h1>
-      <ul>
-        <li><a href="{{ url_for('index') }}">Home</a></li>
-        <li><a href="#">Contact</a></li>
-        <li><a href="#">About</a></li>
-        <li>
-          <a href="{{ url_for('show_user', username=username) }}">Library</a>
-        </li>
-      </ul>
-    </header>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Your Library - The Ministry of Nothing</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='stylesheets/style.css')}}" />
+</head>
 
-    <main>
-      <p class="user-lib-heading">{{ username }}'s library</p>
+<body>
+  <header>
+    <h1>The Ministry of Nothing</h1>
+    <ul>
+      <li><a href="{{ url_for('index') }}">Home</a></li>
+      <li><a href="#">Contact</a></li>
+      <li><a href="#">About</a></li>
+      <li>
+        <a href="{{ url_for('show_user', username=username) }}">Library</a>
+      </li>
+    </ul>
+  </header>
 
-      {% if item %}
-      <ul>
-        {% for i in item %}
-        <li>{{ i[1] }}</li>
-        {% endfor %}
-      </ul>
-      {% else %}
-      <p>No items found.</p>
-      {% endif %}
-    </main>
-  </body>
+  <main>
+    <p class="user-lib-heading">{{ username }}'s library</p>
+
+    {% if item %}
+    <ul>
+      {% for i in item %}
+      <li>{{ i[1] }}</li>
+      {% endfor %}
+    </ul>
+    {% else %}
+    <p>No items found.</p>
+    {% endif %}
+  </main>
+</body>
+<script src="../static/scripts/main.js"></script>
 </html>

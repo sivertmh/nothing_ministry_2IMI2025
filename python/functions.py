@@ -29,9 +29,9 @@ def show_customers():
     print(mycursor.rowcount, "endring(er)")
 
 def create_tables():
-    mycursor.execute("CREATE TABLE user (id INT AUTO_INCREMENT PRIMARY KEY, name VARCHAR(255) NOT NULL, surname VARCHAR(255) NOT NULL, username VARCHAR(255) NOT NULL UNIQUE, email VARCHAR(255) NOT NULL, password VARCHAR(255) NOT NULL DEFAULT 'badpassword123')")
+    mycursor.execute("CREATE TABLE `user` (id INT AUTO_INCREMENT PRIMARY KEY, name VARCHAR(255) NOT NULL, surname VARCHAR(255) NOT NULL, username VARCHAR(255) NOT NULL UNIQUE, email VARCHAR(255) NOT NULL)")
     mycursor.execute("CREATE TABLE category (id INT AUTO_INCREMENT PRIMARY KEY, name VARCHAR(255) NOT NULL)")
-    mycursor.execute("CREATE TABLE creator (id INT AUTO_INCREMENT PRIMARY KEY, name VARCHAR(255) NOT NULL, category_id INT, FOREIGN KEY category_id REFERENCES category(id))")
+    mycursor.execute("CREATE TABLE creator (id INT AUTO_INCREMENT PRIMARY KEY, name VARCHAR(255) NOT NULL, category_id INT, FOREIGN KEY (category_id) REFERENCES category(id))")
     mycursor.execute("CREATE TABLE item (id INT AUTO_INCREMENT PRIMARY KEY, name VARCHAR(255) NOT NULL, creator_id INT, category_id INT, FOREIGN KEY (category_id) REFERENCES category(id), FOREIGN KEY (creator_id) REFERENCES creator(id))")
     mycursor.execute("CREATE TABLE owned (id INT AUTO_INCREMENT PRIMARY KEY, date_ordered TIMESTAMP DEFAULT CURRENT_TIMESTAMP, user_id INT, item_id INT, FOREIGN KEY (user_id) REFERENCES user(id), FOREIGN KEY (item_id) REFERENCES item(id))")
 
@@ -69,7 +69,7 @@ def insert_default_data():
         ("music",),
         ("film",),
         ("series",),
-        ("videogame",),
+        ("videogame",)
     ]
     mycursor.executemany(sql_category, val_category)
     
@@ -100,6 +100,4 @@ def insert_default_data():
     mydb.commit()
 
     print(mycursor.rowcount, "endring(er). Standard data i tabeller skal være i orden.")
-
-create_tables()
-insert_default_data()
+    
