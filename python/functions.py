@@ -38,19 +38,6 @@ def create_tables():
     mydb.commit()
     print("Standardtabeller ble laget.")
 
-# GAMMEL. lager tabellene som db består av
-def add_content_user():
-    sql = "INSERT INTO user (name, surname, username, email) VALUES (%s, %s, %s, %s)"
-    val = [
-        ("Sivert", "K", "sivek", "sivek@email.com"),
-        ("Ylla", "K", "yllak", "yllak@email.com"),
-    ]
-    mycursor.executemany(sql, val)
-
-    mydb.commit()
-    
-    print(mycursor.rowcount, "endring(er).")
-
 # NYERE ENN add_content_user. Setter inn standard data. Category-data trengs for at appen skal funke ordentlig.
 def insert_default_data():
     # standardbrukere

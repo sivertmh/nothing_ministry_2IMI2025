@@ -32,25 +32,23 @@ def index():
 def show_user(username):
     mydb = get_connection()
     mycursor = mydb.cursor()
-    
-    
 
     # Henter brukernavn og id basert på brukernavn i url
-    mycursor.execute("SELECT id, username FROM user WHERE username = %s", (username,))
+    mycursor.execute("SELECT id, name FROM user WHERE username = %s", (username,))
     row = mycursor.fetchone()
 
     if row:
-        user_id, username = row
+        user_id, name = row
         # henter "items" fra gjeldene bruker
         mycursor.execute("SELECT * FROM owned WHERE user_id = %s", (user_id,))
         items = mycursor.fetchall()
     else:
-        username = "User not found"
+        name = "User not found"
         items = []
 
     mydb.close()
 
-    return render_template("user.html", username=username, item=items)
+    return render_template("user.html", name=name, items=items)
 
     
 # registering av bruker

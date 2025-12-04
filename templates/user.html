@@ -22,18 +22,19 @@
   </header>
 
   <main>
-    <p class="user-lib-heading">{{ username }}'s library</p>
+    <p class="user-lib-heading">{{ name }}'s library</p>
 
-    {% if item %}
+    {% if items %}
     <ul>
-      {% for i in item %}
-      <li>{{ i[1] }}</li>
+      {% for i in items %}
+      <li>{{ i[3] }}</li>
       {% endfor %}
     </ul>
     {% else %}
-    <p>No items found.</p>
+    <p>Your library seems empty... you can purchase media on the home page.</p>
     {% endif %}
   </main>
 </body>
 <script src="../static/scripts/main.js"></script>
+
 </html>
