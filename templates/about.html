@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>The Ministry of Nothing</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='stylesheets/style.css')}}" />
+</head>
+
+<body>
+    <header>
+        <h1>The Ministry of Nothing</h1>
+        <ul>
+            <li><a href="{{ url_for('index') }}">Home</a></li>
+            <li><a href="#about">About</a></li>
+            <li>
+                <a href="/u/sivert">Library</a>
+            </li>
+            <li><a href="/u/register">Register</a></li>
+        </ul>
+        <main></main>
+    </header>
+</body>
+<script src="../static/scripts/main.js"></script>
+
+</html>

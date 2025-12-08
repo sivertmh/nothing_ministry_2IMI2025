@@ -35,13 +35,25 @@ def show_user(username):
 
     # Henter brukernavn og id basert på brukernavn i url
     mycursor.execute("SELECT id, name FROM user WHERE username = %s", (username,))
+    # row = (1, "Sivert")
     row = mycursor.fetchone()
 
+    # om henting av brukernavn og id funket kjøres denne (hvis row-variabelen er uten error)
     if row:
         user_id, name = row
-        # henter "items" fra gjeldene bruker
+        mycursor.execute("SELECT item_id FROM owned WHERE user_id = %s", (user_id,))
+        # item_id = (1,)
+        item_id = mycursor.fetchone()
+        
+        # henter og lagrer produktnavn i en variabel item_name
+        mycursor.execute("SELECT name FROM item WHERE id=%s", (item_id))
+        # item_name = ("Don Quixote",)
+        item_name = mycursor.fetchone()
+        
+        # lagrer en brukers items i variabel
         mycursor.execute("SELECT * FROM owned WHERE user_id = %s", (user_id,))
         items = mycursor.fetchall()
+    # kjøres hvis henting av brukernavn og id ga error (hvis row-variabelen får error)
     else:
         name = "User not found"
         items = []
