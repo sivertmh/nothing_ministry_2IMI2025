@@ -6,11 +6,12 @@ load_dotenv()
 def get_connection():
     # kobler til db med miljøvariabler fra .env
     return mysql.connector.connect(
-        host=os.environ.get("DB_HOST", "localhost"),
-        user=os.environ.get("DB_USER"),
-        password=os.environ.get("DB_PASSWORD"),
+        # prøver først med skole-nettverksoppsett
+        host=os.environ.get("DB_HOST_HOME") or os.environ.get("DB_HOST", "localhost"),
+        user=os.environ.get("DB_USER_HOME") or os.environ.get("DB_USER"),
+        password=os.environ.get("DB_PASSWORD_HOME") or os.environ.get("DB_PASSWORD"),
         database=os.environ.get("DB_NAME"), 
-        port="3306",
+        port="3306"
     )
 
 # brukes til å koble til db. VIKTIG.

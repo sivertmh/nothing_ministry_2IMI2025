@@ -44,10 +44,14 @@ Vi har en Raspberry Pi 4 vi har fått av skolen og bruker den som fysisk server.
 
 ### Nettverksoppsett
 
-- Nettverksdiagram
-- IP-adresser: 10.200.14.71 (rpi), 10.200.14.70 (skolepc)
-- Porter: 22 (ssh)
-- Brannmurregler: ufw allow 22
+- **Nettverksdiagram:**
+
+![nothing ministry nettverkskart](nothingministry_networkmap.png)
+
+- **IP-adresser:** 10.200.14.71 (rpi, statisk), 10.200.14.70 (sihaawc, statisk)
+- **IP-addresser (hjemme):** 192.168.68.134 (rpi, statisk), 192.168.68.131 (sihaawc-home, statisk)
+- **Porter:** 22 (ssh)
+- **Brannmurregler:** ufw allow 22
 
 Eksempel:
 
@@ -55,9 +59,25 @@ Eksempel:
 
 ### Tjenestekonfigurasjon
 
-- systemctl / Supervisor
-- Filrettigheter
-- Miljøvariabler: DB_HOST, DB_USER, DB_PASSORD, DB_NAME
+- **systemctl / Supervisor:**
+- **Filrettigheter:**
+- **Miljøvariabler:** DB_HOST, DB_USER, DB_PASSORD, DB_NAME, DB_HOST_HOME, DB_USER_HOME, DB_PASSORD_HOME
+
+- **Databasebruker:**
+
+```sql
+# koden er skrevet i forhold til hjemmeoppsettet mitt.
+
+CREATE USER 'sihaawc-home'@'192.168.68.131' IDENTIFIED BY 'sett_inn_passord';
+
+GRANT ALL PRIVILEGES ON *.* TO 'sihaawc-home'@'192.168.68.131';
+
+FLUSH PRIVILEGES;
+```
+
+eller, hvis IP-adresse har endret seg p.g.a. DHCP:
+
+`RENAME USER 'gammeltnavn'@'ip1' TO 'nyttnavn'@'ip2'`
 
 ---
 
@@ -75,7 +95,7 @@ Jeg har ikke vært vant til å bruke noe slikt før, men det var veldig hjelpsom
 
 ## 5. Databasebeskrivelse
 
-**Databasenavn: nothing_ministry**
+**Databasenavn:** nothing_ministry
 
 **Tabeller:**
 
@@ -131,7 +151,7 @@ CREATE TABLE `user` (
 );
 ```
 
-Koden under 
+Koden under setter inn id til bruker og gjenstand, slik at de "eier" gjenstanden.
 
 ```sql
 INSERT INTO owned (user_id, item_id) VALUES (1, 1);
