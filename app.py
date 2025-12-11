@@ -35,7 +35,7 @@ def show_user(username):
 
     # Henter brukernavn og id basert på brukernavn i url
     mycursor.execute("SELECT id, name FROM user WHERE username = %s", (username,))
-    # row = (1, "Sivert")
+    # row = (1, "sivert")
     row = mycursor.fetchone()
 
     # om henting av brukernavn og id funket kjøres denne (hvis row-variabelen er uten error)
