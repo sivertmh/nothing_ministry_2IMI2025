@@ -10,11 +10,11 @@ def get_connection():
         host=os.environ.get("DB_HOST_HOME") or os.environ.get("DB_HOST", "localhost"),
         user=os.environ.get("DB_USER_HOME") or os.environ.get("DB_USER"),
         password=os.environ.get("DB_PASSWORD_HOME") or os.environ.get("DB_PASSWORD"),
-        database=os.environ.get("DB_NAME"), 
+        database=os.environ.get("DB_NAME"),
         port="3306"
     )
 
-# brukes til å koble til db. VIKTIG.
+# Brukes til å koble til db. Absolutt nødvendig.
 mydb = get_connection()
 mycursor = mydb.cursor()
 

@@ -68,16 +68,16 @@ Eksempel:
 ```sql
 # koden er skrevet i forhold til hjemmeoppsettet mitt.
 
-CREATE USER 'sihaawc-home'@'192.168.68.131' IDENTIFIED BY 'sett_inn_passord';
+CREATE USER 'sihaawc-home'@'192.168.68.131 eller %' IDENTIFIED BY 'sett_inn_passord';
 
-GRANT ALL PRIVILEGES ON *.* TO 'sihaawc-home'@'192.168.68.131';
+GRANT ALL PRIVILEGES ON *.* TO 'sihaawc-home'@'192.168.68.131 eller %';
 
 FLUSH PRIVILEGES;
 ```
 
 eller, hvis IP-adresse har endret seg p.g.a. DHCP:
 
-`RENAME USER 'gammeltnavn'@'ip1' TO 'nyttnavn'@'ip2'`
+``RENAME USER 'gammeltnavn'@'ip1' TO 'nyttnavn'@'ip2'``
 
 ---
 
@@ -100,7 +100,6 @@ Jeg har ikke vært vant til å bruke noe slikt før, men det var veldig hjelpsom
 **Tabeller:**
 
 ```sql
-# alle tabeller
 # SHOW TABLES;
 +----------------------------+
 | Tables_in_nothing_ministry |
@@ -112,7 +111,7 @@ Jeg har ikke vært vant til å bruke noe slikt før, men det var veldig hjelpsom
 | user                       |
 +----------------------------+
 
-# struktur av user-tabell
+# struktur av tabeller
 # DESC user;
 +----------+--------------+------+-----+---------+----------------+
 | Field    | Type         | Null | Key | Default | Extra          |
@@ -124,7 +123,6 @@ Jeg har ikke vært vant til å bruke noe slikt før, men det var veldig hjelpsom
 | email    | varchar(255) | NO   |     | NULL    |                |
 +----------+--------------+------+-----+---------+----------------+
 
-# av owned-tabell
 # DESC owned;
 +--------------+-----------+------+-----+---------------------+----------------+
 | Field        | Type      | Null | Key | Default             | Extra          |
@@ -134,6 +132,33 @@ Jeg har ikke vært vant til å bruke noe slikt før, men det var veldig hjelpsom
 | user_id      | int(11)   | YES  | MUL | NULL                |                |
 | item_id      | int(11)   | YES  | MUL | NULL                |                |
 +--------------+-----------+------+-----+---------------------+----------------+
+
+# DESC item;
++-------------+--------------+------+-----+---------+----------------+
+| Field       | Type         | Null | Key | Default | Extra          |
++-------------+--------------+------+-----+---------+----------------+
+| id          | int(11)      | NO   | PRI | NULL    | auto_increment |
+| name        | varchar(255) | NO   |     | NULL    |                |
+| creator_id  | int(11)      | YES  | MUL | NULL    |                |
+| category_id | int(11)      | YES  | MUL | NULL    |                |
++-------------+--------------+------+-----+---------+----------------+
+
+# DESC creator;
++-------------+--------------+------+-----+---------+----------------+
+| Field       | Type         | Null | Key | Default | Extra          |
++-------------+--------------+------+-----+---------+----------------+
+| id          | int(11)      | NO   | PRI | NULL    | auto_increment |
+| name        | varchar(255) | NO   |     | NULL    |                |
+| category_id | int(11)      | YES  | MUL | NULL    |                |
++-------------+--------------+------+-----+---------+----------------+
+
+# DESC category;
++-------+--------------+------+-----+---------+----------------+
+| Field | Type         | Null | Key | Default | Extra          |
++-------+--------------+------+-----+---------+----------------+
+| id    | int(11)      | NO   | PRI | NULL    | auto_increment |
+| name  | varchar(255) | NO   |     | NULL    |                |
++-------+--------------+------+-----+---------+----------------+
 ```
 
 **SQL-eksempel:**
@@ -157,6 +182,12 @@ Koden under setter inn id til bruker og gjenstand, slik at de "eier" gjenstanden
 INSERT INTO owned (user_id, item_id) VALUES (1, 1);
 ```
 
+
+
+```sql
+mysqldump -u sivert -p nothing_ministry > nothing_ministry.sql
+```
+
 ---
 
 ## 6. Programstruktur
@@ -166,6 +197,7 @@ INSERT INTO owned (user_id, item_id) VALUES (1, 1);
      ├── templates/
      |     ├──index.html
      |     ├──register.html
+     |     ├──about.html   
      |     └──user.html
      |
      ├── python/
@@ -177,6 +209,8 @@ INSERT INTO owned (user_id, item_id) VALUES (1, 1);
      |          └──style.css
      |
      ├── docs/
+     |     ├──nothingministry_networkmap.png
+     |     ├──nothing_ministry.sql
      |     └──readme.md
      |
      └── .env
@@ -281,8 +315,16 @@ sudo ufw reload
 **Hva lærte du?**
 
 - Hva fungerte bra?
+
+Databasestrukturen synes jeg passet veldig godt til behovet mitt. 
+
 - Hva ville du gjort annerledes?
+
+Hvis jeg skulle gjort noe annerledes ville brukt % istedenfor én adresse (remote mariadb-bruker), det skapte én gang store tekniske problemer i forhold til at det var en amatøroppgave og ikke prosjekt egentlig trenger den sikkerheten. Man kan da bruke risikovurdering til å bestemme slike ting som dette.
+
 - Hva var utfordrende?
+
+Det som var mest utfordrende var å sette opp en god struktur av databasen og hente frem den informasjon til brukersiden på nettsiden. Det var mange Foreign Keys å tenke på, og hvilke rekkefølge man må lage og slette tabeller
 
 ---
 
