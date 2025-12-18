@@ -7,9 +7,9 @@ def get_connection():
     # kobler til db med miljøvariabler fra .env
     return mysql.connector.connect(
         # prøver først med skole-nettverksoppsett
-        host=os.environ.get("DB_HOST_HOME") or os.environ.get("DB_HOST", "localhost"),
-        user=os.environ.get("DB_USER_HOME") or os.environ.get("DB_USER"),
-        password=os.environ.get("DB_PASSWORD_HOME") or os.environ.get("DB_PASSWORD"),
+        host=os.environ.get("DB_HOST", "localhost") or os.environ.get("DB_HOST_HOME"),
+        user=os.environ.get("DB_USER") or os.environ.get("DB_USER_HOME"),
+        password=os.environ.get("DB_PASSWORD") or os.environ.get("DB_PASSWORD_HOME"),
         database=os.environ.get("DB_NAME"),
         port="3306"
     )
@@ -29,6 +29,7 @@ def show_customers():
 
     print(mycursor.rowcount, "endring(er)")
 
+# Lager standard tabeller til database. For at category-tabellen skal "funke" må den få insert-data med de forskjellige sjangerne.
 def create_tables():
     mycursor.execute("CREATE TABLE `user` (id INT AUTO_INCREMENT PRIMARY KEY, name VARCHAR(255) NOT NULL, surname VARCHAR(255) NOT NULL, username VARCHAR(255) NOT NULL UNIQUE, email VARCHAR(255) NOT NULL)")
     mycursor.execute("CREATE TABLE category (id INT AUTO_INCREMENT PRIMARY KEY, name VARCHAR(255) NOT NULL)")

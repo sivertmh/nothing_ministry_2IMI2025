@@ -1,3 +1,7 @@
+:root {
+  --item-height: 200px;
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -5,7 +9,6 @@
 
 header {
   background-color: black;
-  margin-bottom: 75px;
 }
 
 header h1 {
@@ -31,6 +34,65 @@ header ul li a:hover {
   background-color: #111111;
 }
 
+.hero {
+  background-color: #878788;
+  padding: 100px;
+
+  justify-content: center;
+  align-items: center;
+}
+
+.hero p {
+  font-style: italic;
+}
+
+.item {
+  width: calc(var(--item-height) * 0.75);
+  height: var(--item-height);
+  margin: 30px;
+  padding: 20px;
+}
+
+.item .creator-name {
+  font-style: italic;
+  font-size: calc(var(--item-height) * 0.075);
+}
+
+.item .item-name {
+  font-weight: bold;
+  font-size: calc(var(--item-height) * 0.08);
+}
+
+.item-pic-cntr {
+  width: calc(var(--item-height) * 0.75);
+  height: calc(var(--item-height));
+  background-color: #f7f6f5;
+
+  justify-content: center;
+  align-items: center;
+  display: flex;
+}
+
+.item-pic-cntr img {
+  height: 50%;
+}
+
 .user-lib-heading {
   text-align: center;
+}
+
+.register-page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.register-form {
+  display: flex;
+  flex-direction: column;
+  width: 200px;
+}
+
+.register-form input {
+  margin: 10px;
 }

@@ -20,16 +20,19 @@
             <li><a href="/u/register">Register</a></li>
         </ul>
     </header>
-    <h3>Register</h3>
-    <main>
-        <form action="/u/register" method="POST">
-            <input type="text" name="name" placeholder="First Name" />
-            <input type="text" name="surname" placeholder="Surname" />
-            <input type="text" name="username" placeholder="Username" />
-            <input type="text" name="email" placeholder="Email" />
-            <input type="text" name="password" placeholder="Password" />
-            <input type="submit" value="Register" />
-        </form>
+
+    <main class="register-page">
+        <div class="register-form">
+            <h3>Register</h3>
+            <form action="/u/register" method="POST">
+                <input type="text" name="name" placeholder="First Name" />
+                <input type="text" name="surname" placeholder="Surname" />
+                <input type="text" name="username" placeholder="Username" />
+                <input type="text" name="email" placeholder="Email" />
+                <input type="text" name="password" placeholder="Password" />
+                <input type="submit" value="Register" />
+            </form>
+        </div>
     </main>
 </body>
 <script src="../static/scripts/main.js"></script>
