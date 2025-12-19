@@ -32,7 +32,7 @@ Dette gjelder bare hvis du har en bruker allerede. Hvis du ikke har bruker kan d
 
 - Python / Flask
 - MariaDB
-- HTML / CSS / JS
+- HTML / CSS
 
 ---
 
@@ -40,7 +40,8 @@ Dette gjelder bare hvis du har en bruker allerede. Hvis du ikke har bruker kan d
 
 ### Servermiljø
 
-Vi har en Raspberry Pi 4 vi har fått av skolen og bruker den som fysisk server. På den var Raspberry Pi OS 64-bit Lite installert.
+Vi har en Raspberry Pi 4 vi har fått av skolen og bruker den som fysisk server. Rpi er installert Raspberry Pi OS 64-bit Lite.
+
 
 ### Nettverksoppsett
 
@@ -50,8 +51,8 @@ Vi har en Raspberry Pi 4 vi har fått av skolen og bruker den som fysisk server.
 
 - **IP-adresser:** 10.200.14.71 (rpi, statisk), 10.200.14.70 (sihaawc, statisk)
 - **IP-addresser (hjemme):** 192.168.68.134 (rpi, statisk), 192.168.68.131 (sihaawc-home, statisk)
-- **Porter:** 22 (ssh)
-- **Brannmurregler:** ufw allow 22
+- **Porter:** 22 (ssh), 3306 (mariadb).
+- **Brannmurregler:** sudo ufw allow 22,3306/tcp
 
 Eksempel:
 
@@ -176,7 +177,7 @@ CREATE TABLE `user` (
 );
 ```
 
-Koden under setter inn id til bruker og gjenstand, slik at de "eier" gjenstanden.
+Koden under setter inn id til bruker og gjenstand slik at de "eier" gjenstanden.
 
 ```sql
 INSERT INTO owned (user_id, item_id) VALUES (1, 1);
@@ -210,6 +211,7 @@ mysqldump -u sivert -p nothing_ministry > nothing_ministry.sql
      ├── docs/
      |     ├──nothingministry_networkmap.png
      |     ├──nothing_ministry.sql
+     |     ├──nothing_ministry_skisse.pdf
      |     └──readme.md
      |
      └── .env
@@ -253,7 +255,9 @@ Forklaring:
 
 1. Den kjører en sql-query mot databasen for å hente ut brukernavn og passord.
 
-2. Bruker If-setning til å bare hente "items" bruker eier, og den kjører bare om fetchone ikke ga error.
+2. Bruker If-setning til å bare hente "items" bruker eier, og den kjører bare om fetchone ikke ga error. Ellers lar den username bli "User not found" og items en tom array.
+
+3. Lukker db-kobling og renderer user.html med variablene for brukernavn og gjenstand.
 
 ---
 
@@ -268,10 +272,6 @@ Forklaring:
 ---
 
 ## 9. Feilsøking og testing
-
-- Typiske feil
-- Hvordan du løste dem
-- Testmetoder
 
 ### Testing
 
@@ -335,11 +335,11 @@ Den første er kubens dns-server og den andre googles, og nå fungerte kobling t
 
 - Hva fungerte bra?
 
-Databasestrukturen synes jeg passet veldig godt til behovet mitt.
+Databasestrukturen synes jeg passet veldig godt til behovet mitt. Jeg synes også ideen passet godt selv om den ikke ble helt ferdig. Den gir plass mange nyttige funksjoner sånn at jeg kan lære dem på en praktisk måte.
 
-- Hva ville du gjort annerledes?
+- Hva ville jeg gjort annerledes?
 
-Hvis jeg skulle gjort noe annerledes ville brukt % istedenfor én adresse (remote mariadb-bruker), det skapte én gang store tekniske problemer i forhold til at det var en amatøroppgave og ikke prosjekt egentlig trenger den sikkerheten. Man kan da bruke risikovurdering til å bestemme slike ting som dette. Når jeg ser tilbake på det jeg rakk å gjøre med oppgaven, ser jeg at den er større enn det jeg hadde tid til. Hvis jeg kunne gått tilbake nå, ville jeg satt et litt mindre mål.
+Hvis jeg skulle gjort noe annerledes ville brukt % istedenfor én adresse (remote mariadb-bruker), det skapte én gang store tekniske problemer i forhold til at det var en amatøroppgave og ikke prosjekt egentlig trenger den sikkerheten. Man kan da bruke risikovurdering til å bestemme slike ting som dette. Når jeg ser tilbake på det jeg rakk å gjøre med oppgaven, ser jeg at den er større enn det jeg hadde tid til. Hvis jeg kunne gått tilbake nå, ville jeg satt et litt mindre mål. Jeg kommer også på noen kolonner som kan legges til tabellene for å utvide funksjon. 
 
 - Hva var utfordrende?
 
